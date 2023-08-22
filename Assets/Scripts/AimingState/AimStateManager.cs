@@ -51,15 +51,6 @@ public class AimStateManager : MonoBehaviour
         {
             aimPos.position = Vector3.Lerp(aimPos.position,hit.point,aimSmoothSpeed* Time.deltaTime);
         }
-
-        if(Input.GetKey(KeyCode.Mouse0))
-        {
-            anim.SetBool("Shooting", true);
-        }
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            anim.SetBool("Shooting", false);
-        }
     }
 
     private void LateUpdate()

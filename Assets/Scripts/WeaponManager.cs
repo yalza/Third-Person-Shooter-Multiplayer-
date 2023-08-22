@@ -15,24 +15,36 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] Transform barrelPos;
     [SerializeField] float bulletVelocity;
-     AimStateManager aim;
+    AimStateManager aim;
+    WeaponAmmo ammo;
 
 
     private void Start()
     {
         aim = GetComponent<AimStateManager>();
+        ammo = GetComponent<WeaponAmmo>();
         fireRateTimer = 0;
     }
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.Mouse0) && ammo.currentAmmo >0)
+        {
+            aim.anim.SetBool("Shooting", true);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0) || ammo.currentAmmo ==0)
+        {
+            aim.anim.SetBool("Shooting", false);
+        }
         if (ShouldFire()) Fire();
+        
     }
 
     bool ShouldFire()
     {
         fireRateTimer += Time.deltaTime;
         if (fireRateTimer < fireRate) return false;
+        if (ammo.currentAmmo == 0) return false;
         if (Input.GetKey(KeyCode.Mouse0)) return true;
         return false;
     }
@@ -58,6 +70,9 @@ public class WeaponManager : MonoBehaviour
         Rigidbody rg = bulletTmp.GetComponent<Rigidbody>();
         rg.velocity = barrelPos.forward * bulletVelocity;
         #endregion
+
+        ammo.currentAmmo--;
+        
     }
 
     IEnumerator DisActive(GameObject mfx)

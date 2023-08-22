@@ -11,11 +11,13 @@ public class MovementStateManager : MonoBehaviour
     public float frontSpeed = 1.2f;
     public float backSpeed = 0.6f;
     public float runSpeed = 2f;
+    public float jumpForce = 10f;
 
     [HideInInspector] public float _hzInput, _vtInput;
     Vector3 velocity;
     [HideInInspector] public Vector3 dir;
     CharacterController controller;
+
     #endregion
 
     #region Check Grounded
@@ -40,6 +42,7 @@ public class MovementStateManager : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
+  
 
         SwitchState(Idle);
 
@@ -56,6 +59,7 @@ public class MovementStateManager : MonoBehaviour
 
         anim.SetFloat("hzInput", _hzInput);
         anim.SetFloat("vtInput", _vtInput);
+        Jump();
     }
 
     public void SwitchState(MovementBaseState state)
@@ -71,27 +75,36 @@ public class MovementStateManager : MonoBehaviour
 
         dir = transform.forward * _vtInput + transform.right* _hzInput;
 
-        controller.Move(dir.normalized * currentMoveSpeed * Time.deltaTime);
+        controller.Move((dir.normalized * currentMoveSpeed)* Time.deltaTime);
     }
 
     private bool IsGrounded()
     {
-        spherePos = new Vector3(transform.position.x,transform.position.y - groundYOffset,transform.position.z);
-        return Physics.CheckSphere(spherePos, controller.radius - 0.05f, groundMask);
+        /*spherePos = new Vector3(transform.position.x,transform.position.y - groundYOffset,transform.position.z);
+        return !Physics.CheckSphere(spherePos, controller.radius - 0.1f, groundMask);*/
+
+        return controller.isGrounded;
+
     }
 
     private void Gravity()
     {
-        if(IsGrounded() == false)
-        {
-            velocity.y += gravity * Time.deltaTime;
-        }
-        else if(velocity.y < 0)
-        {
-            velocity.y = -2;
-        }
-
+        velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+    }
+
+
+
+    private void Jump()
+    {
+        if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        {
+            
+            velocity.y = Mathf.Sqrt(2 * jumpForce * -gravity);
+            anim.ResetTrigger("Jump");
+            anim.SetTrigger("Jump");
+        }
     }
 
 }
