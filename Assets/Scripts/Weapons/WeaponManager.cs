@@ -60,7 +60,6 @@ public class WeaponManager : MonoBehaviour
         Rigidbody rg = bulletTmp.GetComponent<Rigidbody>();
         rg.velocity = barrelPos.forward * bulletVelocity;
         #endregion
-
         ammo.currentAmmo--;
         
     }

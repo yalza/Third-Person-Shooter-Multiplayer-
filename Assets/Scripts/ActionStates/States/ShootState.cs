@@ -20,6 +20,7 @@ public class ShootState : ActionBaseState
         if(action.canReload && action.weapon.ShouldFire())
         {
             action.weapon.Fire();
+            action.recoil.TriggerRecoil();
         }
     }
 }

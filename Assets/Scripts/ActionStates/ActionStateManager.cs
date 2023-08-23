@@ -12,12 +12,14 @@ public class ActionStateManager : MonoBehaviour
 
     [HideInInspector] public WeaponManager weapon;
     [HideInInspector] public WeaponAmmo ammo;
+    [HideInInspector] public WeaponRecoil recoil;
     [HideInInspector] public Animator anim;
 
     public bool canReload = true;
 
     private void Start()
     {
+        recoil = GetComponent<WeaponRecoil>();
         weapon = GetComponent<WeaponManager>();
         ammo = GetComponent<WeaponAmmo>();
         anim = GetComponent<Animator>();
