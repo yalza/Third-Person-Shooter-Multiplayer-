@@ -1572,7 +1572,7 @@ MonoBehaviour:
   frontSpeed: 1.5
   backSpeed: 1.2
   runSpeed: 5
-  jumpForce: 2
+  jumpForce: 3
   _hzInput: 0
   _vtInput: 0
   dir: {x: 0, y: 0, z: 0}
@@ -1645,7 +1645,7 @@ MonoBehaviour:
   cameraFollowPos: {fileID: 1537583745}
   anim: {fileID: 0}
   vCam: {fileID: 0}
-  adsFov: 15
+  adsFov: 10
   hipFov: 0
   currentFov: 0
   fovSmoothSpeed: 10

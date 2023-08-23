@@ -7,8 +7,8 @@ public class ActionStateManager : MonoBehaviour
     ActionBaseState currentState;
 
     public DefaultState Default = new DefaultState();
-    public JunpState Jump = new JunpState();
     public ReloadState Reload  = new ReloadState();
+    public ShootState Shoot = new ShootState();
 
     [HideInInspector] public WeaponManager weapon;
     [HideInInspector] public WeaponAmmo ammo;
@@ -27,7 +27,7 @@ public class ActionStateManager : MonoBehaviour
     private void Update()
     {
         currentState.UpdateState(this);
-        Debug.Log(currentState.ToString());
+        
     }
 
     public void SwitchState(ActionBaseState state)

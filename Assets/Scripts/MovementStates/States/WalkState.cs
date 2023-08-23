@@ -9,13 +9,12 @@ public class WalkState : MovementBaseState
 
     public override void UpdateState(MovementStateManager movement)
     {
+        if(Input.GetKeyDown(KeyCode.Space) && movement.IsGrounded()){
+            ExitState(movement, movement.JumpS);
+        }
         if (Input.GetKeyDown(KeyCode.LeftShift) && movement._vtInput > 0f)
         {
             ExitState(movement,movement.Run);
-        }
-        else if(movement.dir.magnitude < 0.1f)
-        {
-            ExitState(movement,movement.Idle);
         }
 
         if (movement._vtInput < 0f) movement.currentMoveSpeed = movement.backSpeed;

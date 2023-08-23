@@ -15,6 +15,11 @@ public class DefaultState : ActionBaseState
         {
             action.SwitchState(action.Reload);
         }
+
+        if (Input.GetKey(KeyCode.Mouse0) && action.canReload && action.weapon.ShouldFire())
+        {
+            action.SwitchState(action.Shoot);
+        }
     }
 
     private bool CanReload(ActionStateManager action)

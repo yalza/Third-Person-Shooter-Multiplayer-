@@ -34,9 +34,11 @@ public class MovementStateManager : MonoBehaviour
 
     MovementBaseState currentState;
 
-    public IdleState Idle = new IdleState();
     public WalkState Walk = new WalkState();
     public RunState Run = new RunState();
+    public JumpState JumpS = new JumpState();
+
+    public MovementBaseState prevState;
 
     private void Start()
     {
@@ -44,7 +46,8 @@ public class MovementStateManager : MonoBehaviour
         anim = GetComponent<Animator>();
   
 
-        SwitchState(Idle);
+        SwitchState(Walk);
+        prevState = Walk;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -59,11 +62,11 @@ public class MovementStateManager : MonoBehaviour
 
         anim.SetFloat("hzInput", _hzInput);
         anim.SetFloat("vtInput", _vtInput);
-        Jump();
     }
 
     public void SwitchState(MovementBaseState state)
     {
+        prevState = currentState;
         currentState = state;
         currentState.EnterState(this);
     }
@@ -78,7 +81,7 @@ public class MovementStateManager : MonoBehaviour
         controller.Move((dir.normalized * currentMoveSpeed)* Time.deltaTime);
     }
 
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
         /*spherePos = new Vector3(transform.position.x,transform.position.y - groundYOffset,transform.position.z);
         return !Physics.CheckSphere(spherePos, controller.radius - 0.1f, groundMask);*/
@@ -96,15 +99,9 @@ public class MovementStateManager : MonoBehaviour
 
 
 
-    private void Jump()
+    public void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
-        {
-            
-            velocity.y = Mathf.Sqrt(2 * jumpForce * -gravity);
-            anim.ResetTrigger("Jump");
-            anim.SetTrigger("Jump");
-        }
+        velocity.y = Mathf.Sqrt(2 * jumpForce * -gravity);
     }
 
 }

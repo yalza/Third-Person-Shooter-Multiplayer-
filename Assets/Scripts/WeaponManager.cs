@@ -28,19 +28,9 @@ public class WeaponManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Mouse0) && ammo.currentAmmo >0)
-        {
-            aim.anim.SetBool("Shooting", true);
-        }
-        if (Input.GetKeyUp(KeyCode.Mouse0) || ammo.currentAmmo ==0)
-        {
-            aim.anim.SetBool("Shooting", false);
-        }
-        if (ShouldFire()) Fire();
-        
     }
 
-    bool ShouldFire()
+    public bool ShouldFire()
     {
         fireRateTimer += Time.deltaTime;
         if (fireRateTimer < fireRate) return false;
@@ -49,7 +39,7 @@ public class WeaponManager : MonoBehaviour
         return false;
     }
 
-    void Fire()
+    public void Fire()
     {
         #region mfx
         GameObject mfxTmp = ObjectPooling.Instant.GetGameObject(mfx);
