@@ -5,6 +5,7 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     [SerializeField] float lifeTime;
+    [SerializeField] int damage = 20;
 
     private void Start()
     {
@@ -25,5 +26,10 @@ public class BulletController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         gameObject.SetActive(false);
+        Health health = collision.gameObject.GetComponent<Health>();
+        if(health!= null )
+        {
+            health.TakeDamage(damage);
+        }
     }
 }
