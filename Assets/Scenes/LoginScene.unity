@@ -690,6 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   username: 
   cleanPrefs: 0
+  playerPrefab: {fileID: 6271589777178167585, guid: d9179898fdcdc8a4dad81883163d3680, type: 3}
 --- !u!4 &1211936612
 Transform:
   m_ObjectHideFlags: 0

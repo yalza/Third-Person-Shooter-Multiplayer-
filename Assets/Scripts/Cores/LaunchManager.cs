@@ -5,11 +5,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using TMPro;
+using Random = System.Random;
 
 public class LaunchManager : Singleton<LaunchManager>
 {
     public string username;
     public bool cleanPrefs;
+    public GameObject playerPrefab;
 
     #region Unity Methods
     private void Awake()
@@ -47,7 +49,7 @@ public class LaunchManager : Singleton<LaunchManager>
     #region Public Methods
     public void DeletePlayerPrefs()
     {
-
+        PlayerPrefs.DeleteAll();
     }
 
     public void LoadSettings()
@@ -105,6 +107,46 @@ public class LaunchManager : Singleton<LaunchManager>
     {
         base.OnDisconnected(cause);
         Debug.Log(cause.ToString());
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log(PhotonNetwork.NickName + " has joined the lobby with " + PhotonNetwork.CountOfPlayers + " player & " + PhotonNetwork.CountOfRooms + "rooms created");
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("We have joined " + PhotonNetwork.CurrentRoom.Name + " with " + PhotonNetwork.CurrentRoom.PlayerCount + " players");
+        PhotonNetwork.AutomaticallySyncScene = true;
+
+        Random random = new Random();
+        int randomPoint = random.Next(-10, 10);
+
+        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(randomPoint, 0f, randomPoint),Quaternion.identity);
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        Matchmaking.Instant.CreateRoomOnClick();
+        Debug.Log(message);
+    }
+
+    public override void OnCreatedRoom()
+    {
+        Debug.Log("New Room was Created");
+        Debug.Log("Created " + PhotonNetwork.CurrentRoom.Name);
+        Matchmaking.Instant.CreateRoomOnClick();
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        Debug.Log(newPlayer + " has entered " + PhotonNetwork.CurrentRoom.Name);
+    }
+
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LoadLevel(1);
     }
     #endregion
 }
